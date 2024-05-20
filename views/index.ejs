@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon List</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .pokemon-card {
+      cursor: pointer;
+    }
+    .pokemon-image {
+      max-width: 50px;
+      margin-right: 15px;
+    }
+    .card-body {
+      display: flex;
+      align-items: center;
+    }
+    .card-title {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="my-4">Pokémon List</h1>
+    <div class="filter mb-4">
+      <form method="get" action="/">
+        <div class="form-group">
+          <label for="type1">Filter by type 1:</label>
+          <select class="form-control" name="type1" id="type1">
+            <option value="">All</option>
+            <% typesList.forEach(type => { %>
+              <option value="<%= type.name %>" <%= selectedType1 === type.name ? 'selected' : '' %>><%= type.name %></option>
+            <% }); %>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="type2">Filter by type 2:</label>
+          <select class="form-control" name="type2" id="type2">
+            <option value="">All</option>
+            <% typesList.forEach(type => { %>
+              <option value="<%= type.name %>" <%= selectedType2 === type.name ? 'selected' : '' %>><%= type.name %></option>
+            <% }); %>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Filter</button>
+      </form>
+    </div>
+    <div class="pokemon-info mb-4">
+      <p>Total Pokémon: <%= totalPokemon %></p>
+      <p>Displaying <%= displayedPokemonCount %> Pokémon</p>
+    </div>
+    <div class="row">
+      <% pokemonList.forEach(pokemon => { %>
+        <div class="col-md-4 mb-4">
+          <div class="card pokemon-card" onclick="toggleDetails(<%= pokemon.id %>)">
+            <div class="card-body">
+              <img src="<%= pokemon.sprites.front_default %>" alt="<%= pokemon.name %>" class="pokemon-image">
+              <h5 class="card-title"><%= pokemon.name %></h5>
+            </div>
+            <div id="details-<%= pokemon.id %>" class="pokemon-details collapse">
+              <div class="card-body">
+                <p><strong>Height:</strong> <%= pokemon.height %></p>
+                <p><strong>Weight:</strong> <%= pokemon.weight %></p>
+                <p><strong>Abilities:</strong></p>
+                <ul>
+                  <% pokemon.abilities.forEach(ability => { %>
+                    <li><%= ability.ability.name %></li>
+                  <% }); %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <% if (currentPage > 1) { %>
+          <li class="page-item">
+            <a class="page-link" href="/?page=<%= currentPage - 1 %>&type1=<%= selectedType1 %>&type2=<%= selectedType2 %>">Previous</a>
+          </li>
+        <% } %>
+
+        <% let startPage = Math.max(1, currentPage - 2); %>
+        <% let endPage = Math.min(totalPages, currentPage + 2); %>
+
+        <% if (startPage > 1) { %>
+          <li class="page-item"><a class="page-link" href="/?page=1&type1=<%= selectedType1 %>&type2=<%= selectedType2 %>">1</a></li>
+          <% if (startPage > 2) { %>
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+          <% } %>
+        <% } %>
+
+        <% for (let i = startPage; i <= endPage; i++) { %>
+          <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+            <a class="page-link <%= currentPage === i ? 'btn-primary' : '' %>" href="/?page=<%= i %>&type1=<%= selectedType1 %>&type2=<%= selectedType2 %>"><%= i %></a>
+          </li>
+        <% } %>
+
+        <% if (endPage < totalPages) { %>
+          <% if (endPage < totalPages - 1) { %>
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+          <% } %>
+          <li class="page-item"><a class="page-link" href="/?page=<%= totalPages %>&type1=<%= selectedType1 %>&type2=<%= selectedType2 %>"><%= totalPages %></a></li>
+        <% } %>
+
+        <% if (currentPage < totalPages) { %>
+          <li class="page-item">
+            <a class="page-link" href="/?page=<%= currentPage + 1 %>&type1=<%= selectedType1 %>&type2=<%= selectedType2 %>">Next</a>
+          </li>
+        <% } %>
+      </ul>
+    </nav>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    function toggleDetails(id) {
+      $('#details-' + id).collapse('toggle');
+    }
+  </script>
+</body>
+</html>

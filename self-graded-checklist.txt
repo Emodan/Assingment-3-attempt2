@@ -1,0 +1,19 @@
+Self-graded Assignment 3 Checklist
+
+    Criteria	
+    ========
+[5]  Fetch all pokemons names from the API and Create a pokemon card for each pokemon
+[5]  Display the pokemon's details in the modal
+[5]  All pokemons are accessible through the pagination buttons
+[4]  Display only at max 5 pages at a time
+[5]  Display the next and previous buttons
+
+[5]  Highlight the current page's button
+[5]  Hide the next and previous buttons when there is no next or previous page
+[5]  Display total number of Pokémons and the number of Pokémon being displayed
+[5]  Fetch the Pokémon types from the API and display them in a checkbox group
+[5]  Filter the Pokémon cards based on the selected types
+
+49/50 (Total grade out of 50, 5 marks each x 10 items)
+
+*Note items are considered *fully* complete (marked with an x inside the box: [x]), OR incomplete (box is left empty: [ ])
